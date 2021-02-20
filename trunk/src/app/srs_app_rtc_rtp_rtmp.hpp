@@ -196,8 +196,6 @@ private:
     //srs_error_t kickoff_audio_cache(SrsRtpPacket2* pkt, int64_t dts);
 private:
     srs_error_t rtmp_connect();
-   
-
     srs_error_t replace_startcode_with_nalulen(char *video_data, int &size, uint32_t pts, uint32_t dts);
     srs_error_t write_h264_sps_pps(uint32_t dts, uint32_t pts);
     srs_error_t decode_h264_sps_pps(char *frame, int frame_size, uint32_t pts, uint32_t dts);

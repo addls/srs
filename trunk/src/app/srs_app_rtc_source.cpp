@@ -233,7 +233,7 @@ SrsRtcStreamManager::SrsRtcStreamManager()
 SrsRtcStreamManager::~SrsRtcStreamManager()
 {
     // Cleanup rtc source.
-    for(std::map<std::string, SrsRtcStream*> ::iterator it = pool.begin(); it != pool.end(); ++it) {
+    for (std::map<std::string, SrsRtcStream*> ::iterator it = pool.begin(); it != pool.end(); ++it) {
         SrsRtcStream* source = it->second;
         srs_freep(source);
     }
@@ -309,30 +309,28 @@ size_t SrsRtcStreamManager::get_source_size()
 srs_error_t SrsRtcStreamManager::remove_idle_source()
 {
     srs_error_t err = srs_success;
-    if (!lock){
+
+    if (!lock) {
         return err;
     }
 
     SrsLocker(lock);
     
-    for(std::map<std::string, SrsRtcStream*> ::iterator it = pool.begin(); it != pool.end();) {
+    for (std::map<std::string, SrsRtcStream*>::iterator it = pool.begin(); it != pool.end();) {
         SrsRtcStream* source = it->second;
         
-        if (!source->is_alive())
-        {
+        if (!source->is_alive()) {
             SrsContextId cid = source->pre_source_id();
             srs_trace("RTC: remove rtc source %s", cid.c_str());
             srs_freep(source);
             pool.erase(it++);
-        }else{
+        } else {
             ++it;
         }
     }
 
     return err;
 }
-
-
 
 SrsRtcStreamManager* _srs_rtc_sources = new SrsRtcStreamManager();
 
